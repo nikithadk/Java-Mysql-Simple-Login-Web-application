@@ -9,7 +9,7 @@
         Connection con = DriverManager.getConnection("jdbc:sqlserver://arjundb.database.windows.net:1433;database=arjundb;user=arjundb@arjundb;password=Qwerty@12345;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
  
 	Statement st = con.createStatement(); 
-	int i = st.executeUpdate("insert into USER(first_name, last_name, email, username, password, regdate) values ('" + firstName + "','" + lastName + "','" + email + "','" + userName + "','" + password + "', CURDATE())");
+	int i = st.executeUpdate("insert into Users(first_name, last_name, email, username, password, regdate) values ('" + firstName + "','" + lastName + "','" + email + "','" + userName + "','" + password + "', CURDATE())");
 	if (i > 0) { 
 				response.sendRedirect("welcome.jsp"); 
 			} 
