@@ -25,7 +25,7 @@ stage('Build & Upload') {
 
 rtMavenDeployer (
     id: 'deployer-unique-id',
-    serverId: 'Artifactory',
+    serverId: 'server1',
     releaseRepo: 'release/${BUILD_NUMBER}',
     snapshotRepo: "snapshot/${BUILD_NUMBER}"
 )
@@ -43,7 +43,7 @@ goals: params.mvngoal,
 
 stage('Artifact Download') {
 rtDownload (
-    serverId: "Artifactory",
+    serverId: "server1",
     spec:
         """{
           "files": [
