@@ -3,7 +3,7 @@ def call(Map params) {
     pipeline {
         node('master') {
 stage('Clone') {
-    checkout([$class: 'GitSCM', branches: [[name: params.branch]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: params.url]]])
+    checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: params.url]]])
 }
 
 
