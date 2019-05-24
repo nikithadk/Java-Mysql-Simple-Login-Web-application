@@ -8,7 +8,6 @@ stage('Clone') {
 
 
 stage('SonarQube analysis') {
-    def scannerHome = tool 'sonar';
     withSonarQubeEnv('sonar') {
       sh 'mvn sonar:sonar -Dsonar.host.url='+params.sonarURL
    }
