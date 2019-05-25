@@ -1,6 +1,7 @@
 def call(Map params) {
 
     pipeline {
+    try{
         node('master') {
 stage('Clone') {
     checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: params.url]]])
@@ -62,6 +63,11 @@ stage ('Application Deployment'){
 } 
 }
 }
+}catch (err) {
+      mail body:"${err}", subject: 'Build Failed', to: params.email
+      currentBuild.result = 'FAILURE'
+      } 
+
 }
 
 return this
