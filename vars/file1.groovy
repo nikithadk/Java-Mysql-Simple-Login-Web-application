@@ -63,9 +63,9 @@ stage ('Application Deployment'){
 }
 }
 }
-catch (err) {
-      mail body:"$JOB_NAME - Build # $BUILD_NUMBER: ${err}. Check console output at $BUILD_URL to view the results.", subject: 'Build Failed', to: params.email
-      currentBuild.result = 'FAILURE'
+catch (err) { 
+           mail body:"${err}. Check result at ${BUILD_URL}", subject: 'Build Failed', to: params.email
+           currentBuild.result = 'FAILURE'
       }
 }
 }
