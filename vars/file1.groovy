@@ -4,7 +4,7 @@ def call(Map params) {
     //try{
         node('master') {
 stage('Clone') {
-    checkout([$class: 'GitSCM', branches: [[name: params.branch]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: params.url]]])
+    checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/BobbyKumari-99/Java-Mysql-Simple-Login-Web-application.git']]])
 }
 
 
