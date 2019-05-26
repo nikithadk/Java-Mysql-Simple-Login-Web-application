@@ -6,8 +6,8 @@
 	String lastName = request.getParameter("lastName"); 
 	String email = request.getParameter("email"); 
 	Class.forName ("com.mysql.jdbc.Driver"); 
-        String url ="jdbc:mysql://arjunmyql.mysql.database.azure.com:3306/demo?useSSL=true&requireSSL=false"; 
-        Connection con = DriverManager.getConnection(url, "arjundb@arjunmyql", "Qwerty@12345");
+        String url ="jdbc:mysql://nikitha-db.mysql.database.azure.com:3306/sample?useSSL=true&requireSSL=false"; 
+        Connection con = DriverManager.getConnection(url, "nikitha@nikitha-db", "Qwerty@12345");
  
 	Statement st = con.createStatement(); 
 	int i = st.executeUpdate("insert into USER(first_name, last_name, email, username, password, regdate) values ('" + firstName + "','" + lastName + "','" + email + "','" + userName + "','" + password + "', CURDATE())");
