@@ -69,6 +69,5 @@ catch (err) {
       }
 }
 }
-}
 return this
 
