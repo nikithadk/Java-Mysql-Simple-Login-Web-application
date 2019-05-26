@@ -1,7 +1,7 @@
 def call(Map params) {
 
     pipeline {
-    //try{
+    try{
         node('master') {
 stage('Clone') {
     checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/BobbyKumari-99/Java-Mysql-Simple-Login-Web-application.git']]])
@@ -61,11 +61,11 @@ stage ('Application Deployment'){
   sh 'ssh ubuntu@'+params.serverURL+' \'sudo mv /home/ubuntu/LoginWebApp-1.0*.war /home/ubuntu/deploy/\''
 }
 }
-//}
-//catch (err) {
-//     mail body:"${err}. Check result at ${BUILD_URL}", subject: "Build Failed ${JOB_NAME} - Build # ${BUILD_NUMBER}", to: params.email
-//      currentBuild.result = 'FAILURE'
-//      }
+}
+catch (err) {
+     mail body:"${err}. Check result at ${BUILD_URL}", subject: "Build Failed ${JOB_NAME} - Build # ${BUILD_NUMBER}", to: params.email
+      currentBuild.result = 'FAILURE'
+     }
 }
 }
 
