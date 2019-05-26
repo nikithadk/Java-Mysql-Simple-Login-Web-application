@@ -1,14 +1,14 @@
 def call(Map params) {
 
     pipeline {
-   // try{
         node('master') {
 stage('Clone') {
-    checkout([$class: 'GitSCM', branches: [[name:'*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: params.url]]])
+    checkout([$class: 'GitSCM', branches: [[name: params.branch]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: params.url]]])
 }
 
 
 stage('SonarQube analysis') {
+    def scannerHome = tool 'Sonar';
     withSonarQubeEnv('sonar') {
       sh 'mvn sonar:sonar -Dsonar.host.url='+params.sonarURL
    }
@@ -26,9 +26,9 @@ stage('Build & Upload') {
 
 rtMavenDeployer (
     id: 'deployer-unique-id',
-    serverId: 'server1',
-    releaseRepo: 'release/${BUILD_NUMBER}',
-    snapshotRepo: "snapshot/${BUILD_NUMBER}"
+    serverId: 'Artifactory',
+    releaseRepo: 'generic-local/${BUILD_NUMBER}',
+    snapshotRepo: "generic-snapshot/${BUILD_NUMBER}"
 )
 
 rtMavenRun (
@@ -44,12 +44,12 @@ goals: params.mvngoal,
 
 stage('Artifact Download') {
 rtDownload (
-    serverId: "server1",
+    serverId: "Artifactory",
     spec:
         """{
           "files": [
             {
-              "pattern": "snapshot/${BUILD_NUMBER}/com/javawebtutor/LoginWebApp/1.0-SNAPSHOT/LoginWebApp-1.0*.war",
+              "pattern": "generic-snapshot/${BUILD_NUMBER}/com/javawebtutor/LoginWebApp/1.0-SNAPSHOT/LoginWebApp-1.0-SNAPSHOT.war",
               "target": "/var/lib/jenkins/workspace/${JOB_NAME}/"
             }
          ]
@@ -58,16 +58,11 @@ rtDownload (
 }
 
 stage ('Application Deployment'){
-  sh 'scp /var/lib/jenkins/workspace/${JOB_NAME}/${BUILD_NUMBER}/com/javawebtutor/LoginWebApp/1.0-SNAPSHOT/LoginWebApp-1.0*.war ubuntu@'+params.serverURL+':/home/ubuntu/'
-  sh 'ssh ubuntu@'+params.serverURL+' \'sudo mv /home/ubuntu/LoginWebApp-1.0*.war /var/lib/tomcat8/webapps/\''
+  sh 'scp /var/lib/jenkins/workspace/${JOB_NAME}/${BUILD_NUMBER}/com/javawebtutor/LoginWebApp/1.0-SNAPSHOT/LoginWebApp-1.0-SNAPSHOT.war ubuntu@'+params.serverURL+':/home/ubuntu/'
+   sh 'ssh ubuntu@'+params.serverURL+' \'sudo mv /home/ubuntu/LoginWebApp-1.0-SNAPSHOT.war /var/lib/tomcat8/webapps/\''
 }
 }
-//}
-//catch (err) { 
-//         mail body:"${err}. Check result at ${BUILD_URL}", subject: "Build Failed ${JOB_NAME} - Build # ${BUILD_NUMBER}", to: params.email
-//          currentBuild.result = 'FAILURE'
-//      }
 }
 }
-return this
 
+return this
