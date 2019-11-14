@@ -10,7 +10,7 @@ db:
    - /sql:/var/lib/mysql
    - /tmp/Java-Mysql-Simple-Login-Web-application/dockerdemo.txt:/tmp/dockerdemo.txt
 web:
-  build: ./
+  image: nikithadk/loginwebapp
   ports:
    - "8081:8080"
 #  volumes:
